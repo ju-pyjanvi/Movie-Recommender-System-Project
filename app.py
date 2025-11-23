@@ -9,15 +9,15 @@ import os
 import gdown
 
 
-# -----------------------------
+
 # Helpers: title cleaning
-# -----------------------------
+
 def clean_title(title: str) -> str:
     return re.sub(r'[^\w\s]', '', title).strip()
 
-# -----------------------------
+
 # OMDb: title-based details
-# -----------------------------
+
 def get_movie_details_omdb(title: str) -> dict:
     api_key = "aaec11cf"  # replace with your OMDb API key
     q = clean_title(title)
@@ -45,9 +45,9 @@ def get_movie_details_omdb(title: str) -> dict:
             "year": "N/A",
         }
 
-# -----------------------------
+
 # IMDb poster fallback
-# -----------------------------
+
 def get_poster_imdb(title: str) -> str:
     try:
         headers = {"User-Agent": "Mozilla/5.0"}
@@ -81,9 +81,9 @@ def get_poster_imdb(title: str) -> str:
         pass
     return "https://via.placeholder.com/500x750?text=No+Poster"
 
-# -----------------------------
+
 # Unified details with poster fallback
-# -----------------------------
+
 def get_movie_details(title: str) -> dict:
     details = get_movie_details_omdb(title)
     if "No+Poster" in details["poster"]:
@@ -92,9 +92,9 @@ def get_movie_details(title: str) -> dict:
             details["poster"] = imdb_poster
     return details
 
-# -----------------------------
+
 # Data loading
-# -----------------------------
+
 movies_list = pickle.load(open("movies.pkl", "rb"))
 movies = pd.DataFrame(movies_list)
 
@@ -109,9 +109,9 @@ if not os.path.exists(output):
 with open(output, "rb") as f:
     similarity = pickle.load(f)
 
-# -----------------------------
+
 # UI
-# -----------------------------
+
 st.title("🎬 Movie Recommender System")
 selected_movie_name = st.selectbox("Choose Your Movie", movies["title"].values)
 
@@ -124,9 +124,9 @@ num_recommendations = st.number_input(
     step=1
 )
 
-# -----------------------------
+
 # Recommendation logic
-# -----------------------------
+
 def recommend(movie: str) -> list[str]:
     movie_lower = movie.lower().strip()
     exact_match = movies[movies["title"].str.lower() == movie_lower]
@@ -149,9 +149,9 @@ def recommend(movie: str) -> list[str]:
     top_indices = sorted(list(enumerate(distances)), reverse=True, key=lambda x: x[1])[1:num_recommendations+1]
     return [movies.iloc[i[0]].title for i in top_indices]
 
-# -----------------------------
+
 # Display recommendations
-# -----------------------------
+
 if st.button("Recommend"):
     recommendations = recommend(selected_movie_name)
     if recommendations:
