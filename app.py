@@ -5,6 +5,9 @@ import requests
 import re
 from difflib import SequenceMatcher
 from bs4 import BeautifulSoup
+import os
+import gdown
+
 
 # -----------------------------
 # Helpers: title cleaning
@@ -94,7 +97,17 @@ def get_movie_details(title: str) -> dict:
 # -----------------------------
 movies_list = pickle.load(open("movies.pkl", "rb"))
 movies = pd.DataFrame(movies_list)
-similarity = pickle.load(open("similarity.pkl", "rb"))
+
+file_id = "1elaa7DTiDRtjrjz-SpOGbY2Ftdz-E7D0"
+url = f"https://drive.google.com/uc?id={file_id}"
+output = "similarity.pkl"
+
+if not os.path.exists(output):
+    gdown.download(url, output, quiet=False)
+
+
+with open(output, "rb") as f:
+    similarity = pickle.load(f)
 
 # -----------------------------
 # UI
