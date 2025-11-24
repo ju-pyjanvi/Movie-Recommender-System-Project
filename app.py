@@ -162,7 +162,11 @@ if st.button("Recommend"):
             for idx, movie in enumerate(row_movies):
                 with cols[idx]:
                     details = get_movie_details(movie)
-                    st.image(details["poster"], width=170)
+                    poster = details.get("poster")
+                    if poster and poster != "N/A":
+                        st.image(poster,width=170)
+                    else:
+                        st.image("https://via.placeholder.com/170x250?text=No+Poster", width=170)
                     st.markdown(f"**{details['title']}**")
                     st.markdown(f"Rating: {details['rating']}⭐")
                     st.markdown(f"Genre: {details['genre']}")
