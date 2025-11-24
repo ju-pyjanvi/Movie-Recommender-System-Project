@@ -10,7 +10,7 @@ import gdown
 
 
 
-# Helpers: title cleaning
+#title cleaning
 
 def clean_title(title: str) -> str:
     return re.sub(r'[^\w\s]', '', title).strip()
@@ -109,13 +109,9 @@ if not os.path.exists(output):
 with open(output, "rb") as f:
     similarity = pickle.load(f)
 
-
-# UI
-
 st.title("🎬 Movie Recommender System")
 selected_movie_name = st.selectbox("Choose Your Movie", movies["title"].values)
 
-# Number input for recommendations
 num_recommendations = st.number_input(
     "How many recommendations would you like?",
     min_value=1,
@@ -124,8 +120,6 @@ num_recommendations = st.number_input(
     step=1
 )
 
-
-# Recommendation logic
 
 def recommend(movie: str) -> list[str]:
     movie_lower = movie.lower().strip()
@@ -148,9 +142,6 @@ def recommend(movie: str) -> list[str]:
     distances = similarity[movie_index]
     top_indices = sorted(list(enumerate(distances)), reverse=True, key=lambda x: x[1])[1:num_recommendations+1]
     return [movies.iloc[i[0]].title for i in top_indices]
-
-
-# Display recommendations
 
 if st.button("Recommend"):
     recommendations = recommend(selected_movie_name)
