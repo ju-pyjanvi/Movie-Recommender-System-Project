@@ -5,8 +5,4 @@ pandas
 numpy
 scikit-learn
 gdown
-nltk
-pickle
-os
-difflib
-ast
+
