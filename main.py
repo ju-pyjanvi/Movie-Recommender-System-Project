@@ -3,9 +3,7 @@ import pandas as pd
 import pickle
 import ast
 import sklearn
-
 #----------------------------------------------------------------------------------------------------
-
 movies = pd.read_csv('tmdb_5000_movies.csv')
 credits = pd.read_csv('tmdb_5000_credits.csv')
 
